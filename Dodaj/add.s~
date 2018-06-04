@@ -1,0 +1,38 @@
+# Program wywoluje funkcje zamiany miejscami argumenty
+# int swap_add(int *xp, int *yp)
+# zwraca sume tych argumentow
+.section .data
+
+arg1:
+.long 3
+arg2:
+.long 4
+
+.section .text
+.globl _start
+_start:
+
+leal arg2, %eax 
+pushl %eax
+leal arg1, %eax
+pushl %eax
+
+call add
+
+movl %eax, %ebx
+movl $1, %ebx
+int $0x80
+
+
+# Kod funkcji swap_add tutaj
+.type add, @function
+add:
+pushl %ebp		# Save old %ebp
+movl %esp, %ebp		# Set %ebp as frame pointer
+pushl %eax		# Save %ebx
+movl 8(%ebp), %eax	# Get xp
+movl 12(%ebp), %ebx	# Get yp
+addl %ebx, %eax		# Return value = x+y
+popl %ebx		# Restore %ebx
+popl %ebp		# Restore %ebp
+ret			# Return
